@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hao.mapper.commentsMapper">
+  <resultMap id="BaseResultMap" type="com.hao.music.entity.Comments">
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="upperID" jdbcType="INTEGER" property="upperid" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
+    <result column="song_id" jdbcType="INTEGER" property="songId" />
+    <result column="album_id" jdbcType="INTEGER" property="albumId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    ID, upperID, content, user_id, time, song_id, album_id
+  </sql>
+  <select id="selectByExample" parameterType="com.hao.music.entity.commentsExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from comments
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from comments
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from comments
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hao.music.entity.commentsExample">
+    delete from comments
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hao.music.entity.Comments">
+    insert into comments (ID, upperID, content, 
+      user_id, time, song_id, 
+      album_id)
+    values (#{id,jdbcType=INTEGER}, #{upperid,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, 
+      #{userId,jdbcType=INTEGER}, #{time,jdbcType=TIMESTAMP}, #{songId,jdbcType=INTEGER}, 
+      #{albumId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hao.music.entity.Comments">
+    insert into comments
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="upperid != null">
+        upperID,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="time != null">
+        time,
+      </if>
+      <if test="songId != null">
+        song_id,
+      </if>
+      <if test="albumId != null">
+        album_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="upperid != null">
+        #{upperid,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="songId != null">
+        #{songId,jdbcType=INTEGER},
+      </if>
+      <if test="albumId != null">
+        #{albumId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hao.music.entity.commentsExample" resultType="java.lang.Long">
+    select count(*) from comments
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update comments
+    <set>
+      <if test="record.id != null">
+        ID = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.upperid != null">
+        upperID = #{record.upperid,jdbcType=INTEGER},
+      </if>
+      <if test="record.content != null">
+        content = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.time != null">
+        time = #{record.time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.songId != null">
+        song_id = #{record.songId,jdbcType=INTEGER},
+      </if>
+      <if test="record.albumId != null">
+        album_id = #{record.albumId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update comments
+    set ID = #{record.id,jdbcType=INTEGER},
+      upperID = #{record.upperid,jdbcType=INTEGER},
+      content = #{record.content,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      time = #{record.time,jdbcType=TIMESTAMP},
+      song_id = #{record.songId,jdbcType=INTEGER},
+      album_id = #{record.albumId,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hao.music.entity.Comments">
+    update comments
+    <set>
+      <if test="upperid != null">
+        upperID = #{upperid,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="songId != null">
+        song_id = #{songId,jdbcType=INTEGER},
+      </if>
+      <if test="albumId != null">
+        album_id = #{albumId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hao.music.entity.Comments">
+    update comments
+    set upperID = #{upperid,jdbcType=INTEGER},
+      content = #{content,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      time = #{time,jdbcType=TIMESTAMP},
+      song_id = #{songId,jdbcType=INTEGER},
+      album_id = #{albumId,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
